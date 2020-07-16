@@ -1,0 +1,19 @@
+<launch>
+
+	<node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" />
+
+	<node pkg="nodelet" type="nodelet" name="cv_camera" args="load cv_camera/CvCameraNodelet standalone_nodelet" output="screen" />
+
+<?ignore
+	<node name="cv_camera_node" pkg="cv_camera" type="cv_camera_node" output="screen">
+		<remap from="cv_camera_node/image_raw" to="camera/image_raw" />
+		<remap from="cv_camera_node/camera_info" to="camera/camera_info" />
+	</node>
+?>
+	<node name="imu_filter_node" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
+		<param name="use_mag" value="false" />
+	</node>
+
+	<node name="mpu6050_imu_node" pkg="mpu6050-imu" type="mpu6050_imu_node" output="screen"></node>
+
+</launch>
